@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        *{padding:0;margin:0}
+        body{overflow:hidden;}
+        .input{max-width:400px;margin:20px auto;height:40px;}
+        .input input{margin-left:5%;width:60%;height:100%;border-radius: 10px;border:1px solid #ccc;text-indent: 1em}
+        .input button{width:15%;height:100%;border-radius:10px;border:none}
+        input:focus,button:focus{outline: none;}
+        button:focus{background: #000;color:#fff}
+        canvas{z-index: -1;position:absolute;}
+    </style>
+</head>
+<body>
+    <div class="input">
+        <input type="text">
+        <button id='draw'>DRAW</button>
+        <button id='pause'>PAUSE</button>
+    </div>
+    
+    <canvas id="canvas">
+
+    </canvas>
+</body>
+<script src='tween.js'></script>
+<script src='panel.js'></script>
+<script src='drawtext.js'></script>
+</html>
