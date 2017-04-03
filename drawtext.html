@@ -19,12 +19,19 @@
             bottom:4em;
             height:30px;
             left:50%;
-            width:320px;
+            width:420px;
             transform: translateX(-50%);
         }
         #type .item{
             display: inline-block;
             width:100px;
+        }
+        @media(max-width:768px){
+            #type{width:90%;text-align: center}
+            #type .item{
+                display: inline-block;
+                width:auto;
+            } 
         }
     </style>
 </head>
