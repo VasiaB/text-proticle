@@ -14,6 +14,18 @@
         input:focus,button:focus{outline: none;}
         button:focus{background: #000;color:#fff}
         canvas{z-index: -1;position:absolute;}
+        #type{
+            position: fixed;
+            bottom:4em;
+            height:30px;
+            left:50%;
+            width:320px;
+            transform: translateX(-50%);
+        }
+        #type .item{
+            display: inline-block;
+            width:100px;
+        }
     </style>
 </head>
 <body>
@@ -22,10 +34,26 @@
         <button id='draw'>DRAW</button>
         <button id='pause'>PAUSE</button>
     </div>
-    
+    <form id="type">
+        <label class="item">
+            <input checked="checked" type="radio" name='type' value='bounce'> bounce
+        </label>
+        <label class="item">
+            <input type="radio" name='type' value='Quint'> Quint
+        </label>
+        <label class="item">
+            <input type="radio" name='type' value='Elastic'> Elastic
+        </label>
+     
+        <label class="item">
+            <input type="radio" name='type' value='Back'> Back
+        </label>
+        
+    </form>
     <canvas id="canvas">
 
     </canvas>
+    
 </body>
 <script src='tween.js'></script>
 <script src='panel.js'></script>

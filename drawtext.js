@@ -1,15 +1,18 @@
+// 设置一个全屏的画板
 var w = window.innerWidth ;
 var h = window.innerHeight ;
 canvas.width = w ;
 canvas.height = h ;
-
 canvas.style.left = '0';
 canvas.style.top = '0';
 var panel = new CanvasDraw(canvas) ;
+
+// 基准透视
 var pers = 100 ;
 var text ;
 var dots ;
 var imgData ;
+var type ;
 // 构造点对象
 var Dot = function(x,y,z,r){
     this.dx = x ;
@@ -30,10 +33,31 @@ Dot.prototype = {
         var scale = pers/(pers + this.z);
         var x = parseInt(Math.abs(w/2+(this.x-w/2)*scale));
         var y = parseInt(Math.abs(h/2+(this.y-h/2)*scale));
-        var r = this.r*scale;
+        var r = this.r*scale*Math.sqrt(scale);
         var o = scale*0.5;
-        panel.drawBall(x,y,r,'rgba(180,180,180,1)')
+        panel.drawBall(x,y,r,"rgba(0,0,0," + scale/2 + ")")
     }
+}
+function getType(){
+    var options = document.getElementsByName('type');
+    for(var i = 0 ; i<options.length ; i++){
+        options[i].checked && (checked = options[i].value)
+    }
+    switch(checked){
+        case 'bounce':
+            type = 'Bounce';break;
+        case 'Quint':
+            type = 'Quint';break;
+        case 'Elastic':
+            type = 'Elastic';break;
+        case 'Circ':
+            type = 'Circ';break;
+        case 'Back':
+            type = 'Back';break;
+        case 'Expo':
+            type = 'Expo';break;
+    }
+    console.log(type)
 }
 
 // 获取imgdata
@@ -51,7 +75,7 @@ function getDots(imgData){
     for( var x = 0 ; x < imgData.width ; x += 6 ){
         for( var y = 0 ; y < imgData.height ; y += 6 ){
             var i = (y*imgData.width+x)*4-1;
-            if(imgData.data[i]>=128) dots.push(new Dot(x,y,0,3));
+            if(imgData.data[i]>0) dots.push(new Dot(x,y,0,3));
         }
     }
     return dots
@@ -80,9 +104,9 @@ function initAnimate(dots,callback){
     function render(){
         panel.clear();
         dots.forEach(function(item){
-            item.x = Tween.Bounce.easeOut(t,item.tx,item.dx-item.tx,d);
-            item.y = Tween.Bounce.easeOut(t,item.ty,item.dy-item.ty,d);
-            item.z = Tween.Bounce.easeOut(t,item.tz,item.dz-item.tz,d);
+            item.x = Tween[type].easeOut(t,item.tx,item.dx-item.tx,d);
+            item.y = Tween[type].easeOut(t,item.ty,item.dy-item.ty,d);
+            item.z = Tween[type].easeOut(t,item.tz,item.dz-item.tz,d);
             item.paint();
         })
     }
@@ -94,12 +118,15 @@ function leaveAnimate(dots,callback){
     animate();
     function animate(){
         t++;
-        window.animationStatus = 'leave' && render()
-        if(t<d){
-            window.requestAnimationFrame(animate);
-        }else{
-            callback && callback()
+        render();
+        if(window.animationStatus === 'leave'){
+            if(t<d){
+                window.requestAnimationFrame(animate);
+            }else{
+                callback && callback()
+            }
         }
+        
     }
     function render(){
         panel.clear();
@@ -112,12 +139,15 @@ function leaveAnimate(dots,callback){
     }
 }
 window.onload = function(){
-    var text = 'HELLO';
+    getType()
+    document.querySelector('input').value = '1'
+    var text = document.querySelector('input').value;
     var imgData = getImadata(text);
     var dots = getDots(imgData);
     initAnimate(dots);
 }
 document.querySelector('#draw').addEventListener('click',function(){
+    getType()
     text = document.querySelector('input').value;
     imgData = getImadata(text);
     dots = getDots(imgData);
@@ -126,6 +156,7 @@ document.querySelector('#draw').addEventListener('click',function(){
     })
 })
 document.querySelector('#pause').addEventListener('click',function(){
+    getType()
     // 如果不是over
     if(window.animationStatus === 'over'){
         return 

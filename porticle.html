@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id='canvas' style='width:100%;height:100%;'></canvas>
+</body>
+<script src='ui-animal.js'></script>
+<script>
+    // 设置宽高全屏
+    var w = window.innerWidth ;
+    var h = window.innerHeight;
+    canvas.width = w*2 ;
+    canvas.height = h*2 ;
+    var cw = w*2;
+    var ch = h*2;
+    // 随机产生50个点
+    var portArr = [];
+    function createPort(num){
+        for(var i=0 ; i<num ; i++){
+            var x = rn(20,cw-20);
+            var y = rn(20,ch-20);
+            portArr.push({x:x,y:y,vx:rn(-3,3),vy:rn(-4,4)})
+        }
+    }
+    createPort(120)
+    var cxt = new CanvasDraw(canvas);
+    var r = 140;
+    function render(){
+        cxt.clear(cw,ch);
+        portArr.forEach(function(item){
+            
+            item.x += item.vx;
+            if( item.x<=5 || item.x>=cw-5 ){item.vx = -1*item.vx};
+            item.y += item.vy;
+            if( item.y<=5 || item.y>=ch-5 ){item.vy = -1*item.vy};
+
+            portArr.forEach(function(elem){
+                if( (elem.x-item.x)*(elem.x-item.x)+(elem.y-item.y)*(elem.y-item.y)<=r*r ){
+                    cxt.drawLine(elem.x,elem.y,item.x,item.y)
+                }
+            })
+
+            cxt.drawBall(item.x,item.y,10,'#aaa');
+        })
+    }
+    
+    var loop = function(){
+        setTimeout(function(){
+            render();
+            loop()
+        },30)
+    }
+    loop()
+</script>
+</html>

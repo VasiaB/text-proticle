@@ -1,3 +1,4 @@
+// 返回随机色值0,255
 function rn(s,e){
     var start = s ? s : 0 ;
     var end = e ? e : 255 ;
@@ -5,7 +6,7 @@ function rn(s,e){
     var color =  parseInt(start+Math.random()*i);
     return color;
 }
-
+// 返回带有透明度的随机颜色
 function rc(opacity){
     var op = opacity ? opacity : 1 ;
     return 'rgba('+rn()+','+rn()+','+rn()+','+op+')'
