@@ -140,7 +140,7 @@ function leaveAnimate(dots,callback){
 }
 window.onload = function(){
     getType()
-    document.querySelector('input').value = '1'
+    document.querySelector('input').value = 'HELLO'
     var text = document.querySelector('input').value;
     var imgData = getImadata(text);
     var dots = getDots(imgData);
